@@ -1,8 +1,5 @@
 
-const lessRegex = /\.less$/;
-const lessModuleRegex = /\.module\.less$/;
 const path = require('path');
-// const webpack=require('webpack')
 
 let htmlwebpackplugin = require('html-webpack-plugin');//引入html-webpack-plugin插件 
 
@@ -35,14 +32,6 @@ module.exports = {
           },
         module: {
             loaders: [
-                {
-                    test: /\.less$/,
-                    use: [
-                        'style-loader',
-                        'css-loader',
-                        'less-loader' 
-                    ]
-                },
                 
             ]
         },
