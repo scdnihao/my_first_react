@@ -1,5 +1,17 @@
 {
+  // {
+  //   "compilerOptions": {
+  //     "baseUrl": ".", // This must be specified if "paths" is.
+  //     "paths": {
+  //       "jquery": ["node_modules/jquery/dist/jquery"] // 此处映射是相对于"baseUrl"
+  //     }
+  //   }
+  // }
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+        "@/*": ["src/*"] // 此处映射是相对于"baseUrl"
+    },
     "target": "es5",
     "lib": [
       "dom",

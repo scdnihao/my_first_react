@@ -1,8 +1,24 @@
 import React from "react";
 import './index.less'
 
-class Home extends React.Component  {
 
+interface props {
+    count?:string | number
+}
+
+class Home extends React.Component<props>  {
+
+    constructor(props:props){
+        super(props);
+        this.state={
+            count:props.count
+        }
+    }
+
+    public componentDidMount(){
+
+    }
+    
     public change = ()=>{
 
     }
