@@ -1,6 +1,7 @@
 import {RequestRedirect} from '@/types'
 import { createBrowserHistory } from 'history';
-import {setToken,getToken} from "@/utils/util"
+import {getLocalStorage,env,handHint} from "@/utils/util"
+import { message} from 'antd';
 import {ErrorEnum,BusError} from "@/utils/Error"
 
 
@@ -22,8 +23,15 @@ interface RequestParamType{
 const request=async (param:RequestParamType)=>{
     let history = createBrowserHistory();
     let myHeaders = new Headers();
-    if(getToken("_token")){
-        myHeaders.append("Authorization",getToken("_token")||"" );
+    handHint({
+        key:'load',
+        method:'loading',
+        message:"",
+    })
+    if(getLocalStorage("_token")){
+        myHeaders.append("Authorization",getLocalStorage("_token")||"" );
+    }else{
+        history.push("/login")
     }
     myHeaders.append("Content-Type", "application/json");
 
@@ -38,12 +46,9 @@ const request=async (param:RequestParamType)=>{
     let result
     try {
         result= await Promise.race([
-            fetch(`http://first-thebestwebsite.com/server/${param.url}`, requestOptions)
+            fetch(`${env()}${param.url}`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                // if(JSON.parse(result).authToken != undefined && JSON.parse(result).authToken!=null){
-                //     setToken("_token",JSON.parse(result).authToken);
-                // }
                 return JSON.parse(result)
             })
             .catch(error => {throw new Error(error)}),
@@ -54,12 +59,18 @@ const request=async (param:RequestParamType)=>{
                 throw new BusError(result.errorCode,result.message)
             }
     } catch (error:any) {
-        if(error.name ===ErrorEnum[0]){
+        message.destroy("load")
+        if(error.name === ErrorEnum[0]){
             history.push("/login")
         }else{
+            if(!(error.name in ErrorEnum)){
+                throw new Error("系统异常！")
+            }
+            // console.log()
             throw error
         }
     }
+    message.destroy("load")
     return result
 }
 export default request;
