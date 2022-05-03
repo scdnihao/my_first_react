@@ -1,21 +1,24 @@
-import React from "react";
+import React,{ FC, useEffect } from "react";
+import {getLocalStorage,getSessionStorage} from "@/utils/util"
+import {useNavigate,Navigate,useLocation} from "react-router-dom"
 
-class Auth extends React.Component {
-    constructor(props:any){
-        super(props)
-    }
-    
-    render(){
-        console.log(this.props)
-        const {children} = this.props
-        return (
+
+const Auth:React.FC =({children})=>{
+    const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(()=>{
+        if((!getLocalStorage("_token") || !getSessionStorage("_user"))&& location.pathname.indexOf("/login")===-1){
+            navigate('/login', { state: { route: location.pathname} })
+        }
+    },[location])
+    console.log(location)
+    return(
             <>
-                {
-                    children
-                }
+            {
+                children
+            }
             </>
-        )
-    }
+    )
 }
 
 export default Auth
