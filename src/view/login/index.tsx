@@ -6,7 +6,11 @@ import './index.less'
 import {getLocalStorage, setLocalStorage,setSessionStorage,getSessionStorage,isMobile,handHint} from "@/utils/util"
 import request from "@/utils/fetch"
 import {useNavigate,useLocation} from "react-router-dom"
+import allApiPath from '@/utils/allApiPath'
 // import {ErrorEnum} from "@/utils/Error"
+import {store} from '@/store/store'
+import { addRoutes } from "@/store/features/menuSlice";
+import useFetch from '@/hooks/useFetch'
 
 const { TabPane } = Tabs;
 
@@ -38,7 +42,6 @@ const Login:React.FC= ()=>{
     // const params=useSearchParams();
 
     useEffect(()=>{
-        console.log(1123445)
         if((getLocalStorage("_token") &&  getSessionStorage("_user"))){
             if(isMobile()){
 
@@ -57,7 +60,7 @@ const Login:React.FC= ()=>{
     const loginOnFinish = async(val:any)=>{
         try{
             const data = await request({
-                url:"users.login",
+                url:allApiPath.LOGIN,
                 data:val,
                 method:"POST"
             })
@@ -66,6 +69,7 @@ const Login:React.FC= ()=>{
             }
             if(data.data !== undefined && data.data!==null){
                 setSessionStorage("_user",JSON.stringify(data.data))
+                store.dispatch(addRoutes(data.data.menu ||[]))
             }
             if(val.remember){
                 setLocalStorage("_this_us",JSON.stringify(val))
@@ -96,7 +100,7 @@ const Login:React.FC= ()=>{
         console.log(val)
         try{
             const data = await request({
-                url:"users.reg",
+                url:allApiPath.REG,
                 data:val,
                 method:"POST"
             })

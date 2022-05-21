@@ -5,23 +5,12 @@ import {RouteType} from '@/types'
 const menuSlice = createSlice({
     name:"menuSlice",
     initialState:{
-        menu:[
-            {
-                menuCode:"home",
-                menuName:"主页",
-                menuRoute:"/home",
-                isShow:false,
-                menuType:"PC",
-                parentCode:"",
-                children:[
-
-                ]
-            }
-        ],
+        menu:[],
         menuNow:""
     },
     reducers:{
-        addRoutes(state,{payload}){
+        addRoutes(state:any,{payload}:any){
+            state.menu=[...state.menu,...payload]
         }
     }
 })

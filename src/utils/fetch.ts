@@ -1,5 +1,4 @@
 import {RequestRedirect} from '@/types'
-import { createBrowserHistory } from 'history';
 import {getLocalStorage,env,handHint} from "@/utils/util"
 import { message} from 'antd';
 import {ErrorEnum,BusError} from "@/utils/Error"
@@ -21,7 +20,6 @@ interface RequestParamType{
 }
 
 const request=async (param:RequestParamType)=>{
-    let history = createBrowserHistory();
     let myHeaders = new Headers();
     handHint({
         key:'load',
@@ -31,7 +29,7 @@ const request=async (param:RequestParamType)=>{
     if(getLocalStorage("_token")){
         myHeaders.append("Authorization",getLocalStorage("_token")||"" );
     }else{
-        history.push("/login")
+        // navigate('/login', { state: { route: location.pathname} })
     }
     myHeaders.append("Content-Type", "application/json");
 
@@ -61,7 +59,7 @@ const request=async (param:RequestParamType)=>{
     } catch (error:any) {
         message.destroy("load")
         if(error.name === ErrorEnum[0]){
-            history.push("/login")
+            // navigate('/login', { state: { route: location.pathname} })
         }else{
             if(!(error.name in ErrorEnum)){
                 throw new Error("系统异常！")

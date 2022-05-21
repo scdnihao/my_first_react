@@ -11,7 +11,7 @@ const Auth:React.FC =({children})=>{
             navigate('/login', { state: { route: location.pathname} })
         }
     },[location])
-    console.log(location)
+    // console.log(location)
     return(
             <>
             {

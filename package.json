@@ -11,8 +11,8 @@
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "antd": "^4.19.5",
@@ -106,11 +106,14 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "devDependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "antd": "^4.19.5",
     "customize-cra": "^1.0.0",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "less": "^4.1.2",
     "less-loader": "^7.3.0",
     "react-loadable": "^5.5.0",
+    "react-redux": "^8.0.1",
     "react-router-dom": "^6.2.2",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.9.2",
@@ -172,5 +175,10 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "peerDependencies":{
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "homepage": "./"
 }
