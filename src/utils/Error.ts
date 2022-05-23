@@ -12,10 +12,10 @@ export enum ErrorEnum {
  * error
  * 
  * **/
-export class BusError extends Error{
-    constructor(name:ErrorType,message:string) {  
+ export class BusError extends Error{
+    constructor(name:string,message:string) {  
         super()
         this.name=name
         this.message = message
-      }
+    }
 }

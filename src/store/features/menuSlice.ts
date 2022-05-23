@@ -9,7 +9,7 @@ const menuSlice = createSlice({
         menuNow:""
     },
     reducers:{
-        addRoutes(state:any,{payload}:any){
+        addRoutes(state:any,{payload=[]}:any){
             state.menu=[...state.menu,...payload]
         }
     }

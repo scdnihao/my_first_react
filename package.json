@@ -81,7 +81,7 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
-    "dev": "node scripts/start.js",
+    "dev": "PORT=8081 node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
@@ -115,6 +115,7 @@
     "react-loadable": "^5.5.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.2.2",
+    "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^3.11.1"
@@ -176,7 +177,7 @@
       "react-app"
     ]
   },
-  "peerDependencies":{
+  "peerDependencies": {
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },

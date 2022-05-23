@@ -1,7 +1,7 @@
-import React, { useEffect, useState}from "react"
+import { useCallback}from "react"
 import {useNavigate,useLocation} from "react-router-dom"
 import {RequestRedirect} from '@/types'
-import {getLocalStorage,env,handHint} from "@/utils/util"
+import {getLocalStorage,env,handHint,closeHint} from "@/utils/util"
 import { message} from 'antd';
 import {ErrorEnum,BusError} from "@/utils/Error"
 
@@ -21,67 +21,80 @@ interface RequestParamType{
 }
 
 
- const  useFetch=  (param:RequestParamType)=>{
+ export default function useFetch  (){
 
-    // const navigate = useNavigate();
-    // const location = useLocation();
-    // debugger
-    const [data,setDate] =useState<any>(0);
-    // const request =async()=>{
-    //     let myHeaders = new Headers();
-    //     handHint({
-    //         key:'load',
-    //         method:'loading',
-    //         message:"",
-    //     })
-    //     if(getLocalStorage("_token")){
-    //         myHeaders.append("Authorization",getLocalStorage("_token")||"" );
-    //     }else{
-    //         // navigate('/login', { state: { route: location.pathname} })
-    //     }
-    //     myHeaders.append("Content-Type", "application/json");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const request = useCallback( async(param:RequestParamType)=>{
+        let myHeaders = new Headers();
+        handHint({
+            key:'load',
+            method:'loading',
+            message:"",
+        })
+        if(getLocalStorage("_token")){
+            myHeaders.append("Authorization",getLocalStorage("_token")||"" );
+        }else{
+            navigate('/login', { state: { route: location.pathname} })
+            return 
+        }
+        myHeaders.append("Content-Type", "application/json");
     
-    //     let raw = JSON.stringify(param.data);
+        let raw = JSON.stringify(param.data);
     
-    //     let requestOptions:RequestType = {
-    //     method: param.method,
-    //     headers: myHeaders,
-    //     body: raw,
-    //     redirect: 'follow'
-    //     };
-    //     try {
-    //         Promise.race([
-    //             fetch(`${env()}${param.url}`, requestOptions)
-    //             .then(response => response.text())
-    //             .then((result:any) => {
-    //                 setDate(JSON.parse(result))
-    //                 if(!result.state){
-    //                     throw new BusError(result.errorCode,result.message)
-    //                 }
-    //             })
-    //             .catch(error => {throw new Error(error)}),
-    //             new Promise(function(resolve,reject){
-    //                 setTimeout(()=> reject(new Error('request timeout')),3000)
-    //             })])
-    //     } catch (error:any) {
-    //         message.destroy("load")
-    //         if(error.name === ErrorEnum[0]){
-    //             // navigate('/login', { state: { route: location.pathname} })
-    //         }else{
-    //             if(!(error.name in ErrorEnum)){
-    //                 throw new Error("系统异常！")
-    //             }
-    //             throw error
-    //         }
-    //     }
-    //     message.destroy("load")
-    // }
-    // useEffect(()=>{
-    //     request();
-    // },)
+        let requestOptions:RequestType = {
+            method: param.method,
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+        return await Promise.race([
+                fetch(`${env()}${param.url}`, requestOptions)
+                .then(response => response.text())
+                .then((result:any) => {
+                    let json = JSON.parse(result)
+                    console.log(json)
+                    if(!json.state){
+                        throw new BusError(json.errorCode,json.message)
+                    }
+                    closeHint("load")
+                    return json
+                }).catch(error => {
+                    closeHint("load")
+                if(error.name === ErrorEnum[0]){
+                    handHint({
+                        method:"error",
+                        message:"用户信息已过期，请从新登录",
+                        time:2,
+                        callBack:()=>{
+                            localStorage.removeItem("_token");
+                            sessionStorage.removeItem("_user");
+                            navigate('/login', { state: { route: location.pathname} })
+                        },
+                    })
+                }else{
+                    if(!(error.name in ErrorEnum)){
+                        handHint({
+                            method:"error",
+                            message:"系统异常！",
+                        })
+                    }
+                }}),
+                new Promise(function(resolve,reject){
+                    setTimeout(
+                        ()=> reject(new Error('请求超时'))
+                    ,3000)
+                })]).catch(err=>{
+                    handHint({
+                        method:"error",
+                        message:err.message,
+                    })
+                })
+    },[])
         
-    return ""
+    return {
+        request
+    }
     
 }
-export default useFetch
 

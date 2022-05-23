@@ -115,3 +115,15 @@ export const handHint=(param:HintType)=>{
         }
     }
 }
+
+/**
+ * 根据环境隐藏弹框
+ * ***/
+
+export const closeHint =(key:string)=>{
+    if(isMobile()){
+
+    }else{
+        message.destroy(key);
+    }
+}
