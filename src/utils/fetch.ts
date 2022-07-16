@@ -64,7 +64,6 @@ const request=async (param:RequestParamType)=>{
             if(!(error.name in ErrorEnum)){
                 throw new Error("系统异常！")
             }
-            // console.log()
             throw error
         }
     }

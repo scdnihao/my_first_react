@@ -39,8 +39,10 @@ const AuthPc:React.FC<Props>=(props:Props)=>{
         console.log(value)
     }
     useEffect(()=>{
-        init()
-    },[])
+        if(getSessionStorage("_user")){
+            init()
+        }
+    },[getSessionStorage("_user")])
     const init:any=async()=>{
     // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMDIyMDQyMTA4MDIiLCJ1c2VyTmFtZSI6InJvb3QiLCJleHAiOjE2NTMxMzc0ODQsImlhdCI6MTY1MzEzNTY4NH0.h13gWQtUcdkEGumsU2akXRF5DERz-lPiB4gQcoxvCTs
     try{
@@ -103,7 +105,7 @@ const AuthPc:React.FC<Props>=(props:Props)=>{
                 <Layout className="site-layout">
                 <Header className="site-layout-background layout-header" style={{ padding: 0 }} >
                     <div className="user-info">
-                        <img className="user-img" src={require('../../static/user.jpg').default} alt="" />
+                        <img className="user-img" src={require('../../static/headPortrait.jpg').default} alt="" />
                     </div>
                 </Header>
                 <Content style={{ margin: '0 16px' }}>
@@ -115,7 +117,7 @@ const AuthPc:React.FC<Props>=(props:Props)=>{
                     Bill is a cat.
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{ textAlign: 'center' }}>陕ICP备2022004127号</Footer>
                 </Layout>
             </Layout>
             </>

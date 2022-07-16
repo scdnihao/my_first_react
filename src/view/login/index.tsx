@@ -245,6 +245,9 @@ const Login:React.FC= ()=>{
                     </TabPane>
                 </Tabs>
                 </div>
+                <div className="keep-on-record-number">
+                    陕ICP备2022004127号
+                </div>
             </div>
             </>
         )

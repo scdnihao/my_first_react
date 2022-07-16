@@ -81,9 +81,9 @@ export const getSessionStorage =(name:string)=>{
  * **/
 export const env=()=>{
     let url =window.location.href
-    if(url.indexOf("http://localhost/")){
-        return "http://localhost:8080/"
-    }
+    // if(url.indexOf("http://localhost/")){
+    //     return "http://localhost:8080/"
+    // }
     return "http://first-thebestwebsite.com/server/"
 }
 
